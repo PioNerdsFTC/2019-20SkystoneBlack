@@ -14,20 +14,21 @@ import java.util.Locale;
 @TeleOp
 public class JasonTeleop extends LinearOpMode {
     ColorSensor sensorColor;
-    DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
+    
     @Override
     public void runOpMode() {
 
-        // get a reference to the color sensor.
+        // get reference to the color sensor.
         sensorColor = hardwareMap.get(ColorSensor.class, "sensor_color_distance");
         REVColorSensor colorController = new REVColorSensor(sensorColor);
-        frontLeft.getCurrentPosition();
+        DcMotor frontLeft = hardwareMap.get(DcMotor.class, "frontLeft");
         // wait for the start button to be pressed.
         waitForStart();
 
         // loop and read the RGB and distance data.
         // Note we use opModeIsActive() as our loop condition because it is an interruptible method.
         while (opModeIsActive()) {
+            telemetry.addData("Motor Rotation", frontLeft.getCurrentPosition());
             telemetry.addData("Red", colorController.getRed());
             telemetry.addData("Green", colorController.getGreen());
             telemetry.addData("Blue", colorController.getBlue());
