@@ -7,6 +7,27 @@ public class RobotDrive {
     public RobotDrive(){
     }
 
+    public void mecanumDrive(double joyX, double joyY, double joyZ, DcMotor[] wheels){
+        double[] wheelValues = new double[4];
+
+        //This is the Calculations for mecanum drive
+
+        //This was found by seeing which directions the wheels
+        //needed to rotate to get a net positive movement in each axis.
+
+        //If you have any questions, ask Ryan, he has a sheet that can explain it.
+        wheelValues[0] =  joyX + joyY +  joyZ; //FL
+        wheelValues[1] = -joyX + joyY + -joyZ; //FR
+        wheelValues[2] = -joyX + joyY +  joyZ; //BL
+        wheelValues[3] =  joyX + joyY + -joyZ; //BR
+
+        //Make sure the values for each wheels are withing the range [-1,1]
+        //Also make sure they are all scaled appropriately
+        wheelValues = normalize(wheelValues);
+
+        setWheelSpeeds(wheelValues,wheels);
+    }
+
     private double[] normalize(double[] values){
         double[] newValues = new double[values.length];
         double max = max(values);
@@ -38,30 +59,6 @@ public class RobotDrive {
             }else{
                 wheels[i].setPower(wheelSpeeds[i]);
             }
-
         }
     }
-
-    public void mecanumDrive(double joyX, double joyY, double joyZ, DcMotor[] wheels){
-        double[] wheelValues = new double[4];
-
-        //This is the Calculations for mecanum drive
-
-        //This was found by seeing which directions the wheels
-        //needed to rotate to get a net positive movement in each axis.
-
-        //If you have any questions, ask Ryan, he has a sheet that can explain it.
-        wheelValues[0] =  joyX + joyY + joyZ;  //FL
-        wheelValues[1] = -joyX + joyY + -joyZ; //FR
-        wheelValues[2] = -joyX + joyY + joyZ;  //BL
-        wheelValues[3] =  joyX + joyY + -joyZ; //BR
-
-        //Make sure the values for each wheels are withing the range [-1,1]
-        //Also make sure they are all scaled appropriately
-        wheelValues = normalize(wheelValues);
-
-        setWheelSpeeds(wheelValues,wheels);
-    }
-
-
 }

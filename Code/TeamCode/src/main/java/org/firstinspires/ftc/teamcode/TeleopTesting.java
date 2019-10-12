@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -17,21 +18,34 @@ public class TeleopTesting extends LinearOpMode {
 
     private RobotDrive robot;
 
+    BNO055IMU imu;
+
     @Override
     public void runOpMode() {
         //Connect the wheels int the configuration to the wheels in the code
+        /*
         wheels[0] = hardwareMap.get(DcMotor.class,"FLeft");
         wheels[1] = hardwareMap.get(DcMotor.class,"FRight");
         wheels[2] = hardwareMap.get(DcMotor.class,"BLeft");
         wheels[3] = hardwareMap.get(DcMotor.class,"BRight");
+        //*/
 
         //Make an instance of the RobotDrive Class
         RobotDrive robot = new RobotDrive();
 
+        //Make an instance of the Gyro Class
+//        Gyro gyro = new Gyro();
+
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        Gyro gyro = new Gyro(imu);
+
         //Wait for the human driver to press the play button
         waitForStart();
 
-        while (opModeIsActive()) {
+        telemetry.addData("MyStatus", "Started");
+        telemetry.update();
+
+            while (opModeIsActive()) {
 
             //Define Variables for joystick values
 
@@ -44,6 +58,33 @@ public class TeleopTesting extends LinearOpMode {
 
             //Drive Mecanum wheels with the wheels defined.
             robot.mecanumDrive(joyX, joyY, joyZ, wheels);
+
+            //Self explanitory.
+            showGyrosData(gyro);
+
+            telemetry.addData("MyStatus", "Running");
+            telemetry.update();
         }
+    }
+
+    /*
+    public TeleopTesting(){
+    }
+
+    public void showTelementaryData(String label, String data){
+        telemetry.addData(label,data);
+        telemetry.update();
+    }
+    public void showTelementaryData(String label, Float data){
+        telemetry.addData(label,data);
+        telemetry.update();
+    }
+    //*/
+
+    public void showGyrosData(Gyro gyro){
+        telemetry.addData("X: ", gyro.getX());
+        telemetry.addData("Y: ", gyro.getY());
+        telemetry.addData("Z: ", gyro.getZ());
+//        telemetry.update();
     }
 }
