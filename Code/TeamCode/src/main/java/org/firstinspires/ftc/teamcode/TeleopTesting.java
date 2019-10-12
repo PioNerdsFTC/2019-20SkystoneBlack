@@ -23,7 +23,8 @@ public class TeleopTesting extends LinearOpMode {
     @Override
     public void runOpMode() {
         //Connect the wheels int the configuration to the wheels in the code
-        /*
+
+        ///*
         wheels[0] = hardwareMap.get(DcMotor.class,"FLeft");
         wheels[1] = hardwareMap.get(DcMotor.class,"FRight");
         wheels[2] = hardwareMap.get(DcMotor.class,"BLeft");
@@ -57,10 +58,13 @@ public class TeleopTesting extends LinearOpMode {
             joyZ = gamepad1.right_trigger + -gamepad1.left_trigger;
 
             //Drive Mecanum wheels with the wheels defined.
-            robot.mecanumDrive(joyX, joyY, joyZ, wheels);
+//            robot.mecanumDrive(joyX, joyY, joyZ,false, wheels);
+            robot.gyroDriveTowardsDriection(gyro, 0,true, 1.0, wheels);
 
             //Self explanitory.
             showGyrosData(gyro);
+
+            showWheelSpeeds(robot);
 
             telemetry.addData("MyStatus", "Running");
             telemetry.update();
@@ -85,6 +89,11 @@ public class TeleopTesting extends LinearOpMode {
         telemetry.addData("X: ", gyro.getX());
         telemetry.addData("Y: ", gyro.getY());
         telemetry.addData("Z: ", gyro.getZ());
-//        telemetry.update();
+    }
+
+    public void showWheelSpeeds(RobotDrive robot){
+        for(int i = 0; i < robot.publicWheelSpeeds.length; i++){
+            telemetry.addData("Motor Number: " + i, robot.publicWheelSpeeds[i]);
+        }
     }
 }

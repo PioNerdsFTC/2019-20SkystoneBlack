@@ -30,9 +30,9 @@ public class Gyro{
 
     // State used for updating telemetry
     Orientation angles;
-    Acceleration gravity;
+//    Acceleration gravity;
 
-    public Gyro(BNO055IMU imu){
+    public Gyro(BNO055IMU imuIn){
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
@@ -47,11 +47,12 @@ public class Gyro{
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
         // on a Core Device Interface Module, configured to be a sensor of type "AdaFruit IMU",
         // and named "imu".
-        imu.initialize(parameters);
+        imuIn.initialize(parameters);
 
         // Start the logging of measured acceleration
-        imu.startAccelerationIntegration(new Position(), new Velocity(), 1000);
+        imuIn.startAccelerationIntegration(new Position(), new Velocity(), 1000);
 
+        imu = imuIn;
 
 //        tt.showTelementaryData("PLEASE SHOW UP", "Constructor");
         /*
@@ -80,8 +81,12 @@ public class Gyro{
     ///*
     public String getZ(){
 //        return gyro.getX();
-        angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-        return formatAngle(angles.angleUnit, angles.firstAngle);
+        if(imu != null) {
+            angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
+            return formatAngle(angles.angleUnit, angles.firstAngle);
+        }else{
+            return "IMU_NULL_ERROR";
+        }
     }
     public String getY(){
 //        return gyro.getY();

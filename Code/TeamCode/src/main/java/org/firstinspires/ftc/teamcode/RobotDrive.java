@@ -4,10 +4,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class RobotDrive {
 
+    double[] publicWheelSpeeds = new double[4];
+
     public RobotDrive(){
     }
 
-    public void mecanumDrive(double joyX, double joyY, double joyZ, DcMotor[] wheels){
+    public void mecanumDrive(double joyX, double joyY, double joyZ, boolean enableWheels, double scale, DcMotor[] wheels){
         double[] wheelValues = new double[4];
 
         //This is the Calculations for mecanum drive
@@ -25,8 +27,38 @@ public class RobotDrive {
         //Also make sure they are all scaled appropriately
         wheelValues = normalize(wheelValues);
 
-        setWheelSpeeds(wheelValues,wheels);
+        setWheelSpeeds(wheelValues, wheels, scale, enableWheels);
     }
+
+    public void gyroDriveTowardsDriection(Gyro gyro, double gryoStraightValue, boolean enableWheels, double scale, DcMotor[] wheels){
+        double[] wheelValues = new double[4];
+
+        double[] leftNRightValues = driveTowards(gyro,gryoStraightValue);
+
+        /*
+        wheelValues [0] = leftNRightValues[0]; //fL
+        wheelValues [1] = leftNRightValues[1]; //fR
+        wheelValues [2] = leftNRightValues[0]; //bL
+        wheelValues [3] = leftNRightValues[1]; //bR
+        //*/
+
+//        setWheelSpeeds(wheelValues,wheels);
+        mecanumDrive(0,1,leftNRightValues[0],enableWheels,scale, wheels);
+    }
+
+    private double[] driveTowards(Gyro gyro, double gyroStraightValue){
+        double[] leftNRightValues = new double[2];
+
+        //0 is the left, 1 is the right;
+
+        double gyroError = Double.parseDouble(gyro.getZ());
+
+        leftNRightValues[0] = gyroError /  90.0;
+        leftNRightValues[1] = gyroError / -90.0;
+
+        return leftNRightValues;
+    }
+
 
     private double[] normalize(double[] values){
         double[] newValues = new double[values.length];
@@ -50,14 +82,17 @@ public class RobotDrive {
         return max;
     }
 
-    private void setWheelSpeeds(double[] wheelSpeeds, DcMotor[] wheels){
+    public void setWheelSpeeds(double[] wheelSpeeds, DcMotor[] wheels, double scale, boolean enableWheels){
+            publicWheelSpeeds = wheelSpeeds;
         for(int i = 0; i < 4; i++){
             //Set the speed of the Wheels
-            if(i % 2 == 0){
-                //This inverts the Left side wheels because when they spin clockwise that is backwards while the right side clockwise is forwards
-                wheels[i].setPower(-wheelSpeeds[i]);
-            }else{
-                wheels[i].setPower(wheelSpeeds[i]);
+            if(enableWheels) {
+                if (i % 2 == 0) {
+                    //This inverts the Left side wheels because when they spin clockwise that is backwards while the right side clockwise is forwards
+                    wheels[i].setPower(-wheelSpeeds[i] * scale);
+                } else {
+                    wheels[i].setPower(wheelSpeeds[i] * scale);
+                }
             }
         }
     }
