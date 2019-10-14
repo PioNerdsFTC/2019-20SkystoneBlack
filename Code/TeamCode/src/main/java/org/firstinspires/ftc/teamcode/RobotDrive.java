@@ -9,6 +9,18 @@ public class RobotDrive {
     public RobotDrive(){
     }
 
+
+    public void driveTillColor(double redValue, double greenValue, double blueValue, double tolerance, ColorSensorClass sensorColor, boolean enableWheels, double scale, DcMotor[] wheels){
+
+        boolean condition = !(Math.abs(redValue - sensorColor.red()) < tolerance && Math.abs(greenValue - sensorColor.green()) < tolerance && Math.abs(blueValue - sensorColor.blue()) < tolerance);
+
+        while(condition){
+            condition = !(Math.abs(redValue - sensorColor.red()) < tolerance && Math.abs(greenValue - sensorColor.green()) < tolerance && Math.abs(blueValue - sensorColor.blue()) < tolerance);
+
+            mecanumDrive(0,1,0,enableWheels,scale,wheels);
+        }
+    }
+
     public void mecanumDrive(double joyX, double joyY, double joyZ, boolean enableWheels, double scale, DcMotor[] wheels){
         double[] wheelValues = new double[4];
 
