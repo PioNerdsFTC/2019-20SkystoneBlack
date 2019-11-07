@@ -131,7 +131,7 @@ public class ConceptVuMarkIdentification extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-        relicTrackables.activate();
+        relicTrackables.activate(); // it activates the relicTrackables object to begin looking for and identifying this set of VuMarks.
 
         while (opModeIsActive()) {
 

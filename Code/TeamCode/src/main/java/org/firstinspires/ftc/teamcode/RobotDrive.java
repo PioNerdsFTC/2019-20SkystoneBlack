@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+
 public class RobotDrive {
 
     double[] publicWheelSpeeds = new double[4];
@@ -9,7 +10,7 @@ public class RobotDrive {
     public RobotDrive(){
     }
 
-
+/*
     public void driveTillColor(double redValue, double greenValue, double blueValue, double tolerance, ColorSensorClass sensorColor, boolean enableWheels, double scale, DcMotor[] wheels){
 
         boolean condition = !(Math.abs(redValue - sensorColor.red()) < tolerance && Math.abs(greenValue - sensorColor.green()) < tolerance && Math.abs(blueValue - sensorColor.blue()) < tolerance);
@@ -20,7 +21,7 @@ public class RobotDrive {
             mecanumDrive(0,1,0,enableWheels,scale,wheels);
         }
     }
-
+//*/
     public void mecanumDrive(double joyX, double joyY, double joyZ, boolean enableWheels, double scale, DcMotor[] wheels){
         double[] wheelValues = new double[4];
 
@@ -45,7 +46,8 @@ public class RobotDrive {
     public void gyroDriveTowardsDriection(Gyro gyro, double gryoStraightValue, boolean enableWheels, double scale, DcMotor[] wheels){
         double[] wheelValues = new double[4];
 
-        double[] leftNRightValues = driveTowards(gyro,gryoStraightValue);
+//        double[] leftNRightValues = driveTowards(gyro,gryoStraightValue);
+        double leftNRightValue = driveTowards(gyro,gryoStraightValue);
 
         /*
         wheelValues [0] = leftNRightValues[0]; //fL
@@ -55,20 +57,24 @@ public class RobotDrive {
         //*/
 
 //        setWheelSpeeds(wheelValues,wheels);
-        mecanumDrive(0,1,leftNRightValues[0],enableWheels,scale, wheels);
+        mecanumDrive(0,1,leftNRightValue,enableWheels,scale, wheels);
     }
 
-    private double[] driveTowards(Gyro gyro, double gyroStraightValue){
-        double[] leftNRightValues = new double[2];
+    private double driveTowards(Gyro gyro, double gyroStraightValue){
+//        double[] leftNRightValues = new double[2]; //0 is the left, 1 is the right;
+        double leftNRightValue;
 
-        //0 is the left, 1 is the right;
+        //if + than rotate right if - than rotate left
+        //Gyro rotation is inverted so since that is inverted and we want to go the inverted direction of the error, they cancel out
+        double gyroError = Double.parseDouble(gyro.getZ()) - gyroStraightValue;
 
-        double gyroError = Double.parseDouble(gyro.getZ());
 
-        leftNRightValues[0] = gyroError /  90.0;
-        leftNRightValues[1] = gyroError / -90.0;
+        leftNRightValue = Math.sqrt(gyroError /  90.0);
 
-        return leftNRightValues;
+//        leftNRightValues[0] = gyroError /  90.0;
+//        leftNRightValues[1] = gyroError / -90.0;
+
+        return leftNRightValue;
     }
 
 
@@ -95,15 +101,18 @@ public class RobotDrive {
     }
 
     public void setWheelSpeeds(double[] wheelSpeeds, DcMotor[] wheels, double scale, boolean enableWheels){
-            publicWheelSpeeds = wheelSpeeds;
+//        publicWheelSpeeds = wheelSpeeds;
+        for(int i = 0; i < wheelSpeeds.length; i++){
+            publicWheelSpeeds[i] = wheelSpeeds[i] * scale;
+        }
         for(int i = 0; i < 4; i++){
             //Set the speed of the Wheels
             if(enableWheels) {
                 if (i % 2 == 0) {
                     //This inverts the Left side wheels because when they spin clockwise that is backwards while the right side clockwise is forwards
-                    wheels[i].setPower(-wheelSpeeds[i] * scale);
-                } else {
                     wheels[i].setPower(wheelSpeeds[i] * scale);
+                } else {
+                    wheels[i].setPower(-wheelSpeeds[i] * scale);
                 }
             }
         }
