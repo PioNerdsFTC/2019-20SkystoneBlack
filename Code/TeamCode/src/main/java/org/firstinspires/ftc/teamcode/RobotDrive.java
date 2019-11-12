@@ -97,19 +97,32 @@ public class RobotDrive {
         }
     }
 
-    public void driveToColor(double power, String targetColor) {
+ /*  public void driveToColor(double power, String targetColor, DcMotor[] wheels) {
         if (targetColor.equals("blue")) {
             // color == color reading from sensor
             while (!(color.equals("blue"))) {
                 // robot move forward
-                wheels = power;
+                wheels[0].setPower(power);
+                wheels[1].setPower(power);
+                wheels[2].setPower(power);
+                wheels[3].setPower(power);
             }
         }
-        if (targetColor.equals("red")) {
-            while (!(color.equals("red"))) {
-                wheels = power;
-            }
-        }
-    }
 
+        else if (targetColor.equals("red")) {
+            while (!(color.equals("red"))) {
+                wheels[0].setPower(power);
+                wheels[1].setPower(power);
+                wheels[2].setPower(power);
+                wheels[3].setPower(power);
+            }
+        }
+        else{
+        wheels[0].setPower(0);
+            wheels[1].setPower(0);
+            wheels[2].setPower(0);
+            wheels[3].setPower(0);
+          }
+    }
+*/
 }
