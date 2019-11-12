@@ -18,12 +18,15 @@ public class REVColorSensor {
         sensorColor = sensorColorIn;
     }
     public double getRed() {
+
         return sensorColor.red();
     }
     public double getGreen() {
+
         return sensorColor.green();
     }
     public double getBlue() {
+
         return sensorColor.blue();
     }
 }

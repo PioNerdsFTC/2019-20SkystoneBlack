@@ -9,7 +9,7 @@ public class RobotDrive {
     public RobotDrive(){
     }
 
-    public void mecanumDrive(double joyX, double joyY, double joyZ, boolean enableWheels, double scale, DcMotor[] wheels){
+    public void mecanumDrive(double joyX, double joyY, double joyZ, boolean enableWheels, double scale, DcMotor[] wheels) {
         double[] wheelValues = new double[4];
 
         //This is the Calculations for mecanum drive
@@ -96,4 +96,20 @@ public class RobotDrive {
             }
         }
     }
+
+    public void driveToColor(double power, String targetColor) {
+        if (targetColor.equals("blue")) {
+            // color == color reading from sensor
+            while (!(color.equals("blue"))) {
+                // robot move forward
+                wheels = power;
+            }
+        }
+        if (targetColor.equals("red")) {
+            while (!(color.equals("red"))) {
+                wheels = power;
+            }
+        }
+    }
+
 }
