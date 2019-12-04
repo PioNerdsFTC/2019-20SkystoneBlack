@@ -58,7 +58,7 @@ public class TeleopTesting extends LinearOpMode {
             joyZ = gamepad1.right_trigger + -gamepad1.left_trigger;
 
             //Drive Mecanum wheels with the wheels defined.
-            robot.mecanumDrive(joyX, joyY, joyZ,false, 1, wheels);
+            robot.mecanumDrive(joyX, joyY, joyZ,true, 1, wheels);
             //robot.gyroDriveTowardsDriection(gyro, 0,true, 1.0, wheels);
 
             //Self explanitory.
