@@ -32,6 +32,8 @@ public class Gyro{
     Orientation angles;
 //    Acceleration gravity;
 
+    double startValue;
+
     public Gyro(BNO055IMU imuIn){
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
@@ -64,11 +66,13 @@ public class Gyro{
 //            tt.showTelementaryData("Gyro", "NO_GYRO!");
 //        }
         //*/
+
+        startValue = getZ();
     }
 
     /*
     public void showGyroData() {
-        tt.showTelementaryData("PLEASE SHOW UP", "Method");
+//        tt.showTelementaryData("PLEASE SHOW UP", "Method");
 
         tt.showTelementaryData("X: ", gyro.getX());
         tt.showTelementaryData("Y: ", gyro.getY());
@@ -79,13 +83,13 @@ public class Gyro{
 
 
     ///*
-    public String getZ(){
+    public double getZ(){
 //        return gyro.getX();
         if(imu != null) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            return formatAngle(angles.angleUnit, angles.firstAngle);
+            return Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
         }else{
-            return "IMU_NULL_ERROR";
+            return -1.11;//"IMU_NULL_ERROR";
         }
     }
     public String getY(){

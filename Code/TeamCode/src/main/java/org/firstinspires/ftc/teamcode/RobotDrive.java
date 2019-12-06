@@ -1,6 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 
 public class RobotDrive {
@@ -22,7 +22,7 @@ public class RobotDrive {
         }
     }
 //*/
-    public void mecanumDrive(double joyX, double joyY, double joyZ, boolean enableWheels, double scale, DcMotor[] wheels){
+    public void mecanumDrive(double joyX, double joyY, double joyZ, boolean enableWheels, double scale, DcMotorSimple[] wheels){
         double[] wheelValues = new double[4];
 
         //This is the Calculations for mecanum drive
@@ -43,7 +43,7 @@ public class RobotDrive {
         setWheelSpeeds(wheelValues, wheels, scale, enableWheels);
     }
 
-    public void gyroDriveTowardsDriection(Gyro gyro, double gryoStraightValue, boolean enableWheels, double scale, DcMotor[] wheels){
+    public void gyroDriveTowardsDriection(Gyro gyro, double gryoStraightValue, boolean enableWheels, double scale, DcMotorSimple[] wheels){
         double[] wheelValues = new double[4];
 
 //        double[] leftNRightValues = driveTowards(gyro,gryoStraightValue);
@@ -57,7 +57,7 @@ public class RobotDrive {
         //*/
 
 //        setWheelSpeeds(wheelValues,wheels);
-        mecanumDrive(0,1,leftNRightValue,enableWheels,scale, wheels);
+        mecanumDrive(Math.cos((90+gryoStraightValue)*(Math.PI / 180)),Math.sin((90+gryoStraightValue)*(Math.PI / 180)),leftNRightValue,enableWheels,scale, wheels);
     }
 
     private double driveTowards(Gyro gyro, double gyroStraightValue){
@@ -66,15 +66,22 @@ public class RobotDrive {
 
         //if + than rotate right if - than rotate left
         //Gyro rotation is inverted so since that is inverted and we want to go the inverted direction of the error, they cancel out
-        double gyroError = Double.parseDouble(gyro.getZ()) - gyroStraightValue;
+        double gyroError = gyro.getZ() - gyroStraightValue;
 
 
-        leftNRightValue = Math.sqrt(gyroError /  90.0);
+        leftNRightValue = Math.sqrt(Math.abs(gyroError) /  90.0);
+        if(gyroError < 0){
+            leftNRightValue *= -1;
+        }
 
 //        leftNRightValues[0] = gyroError /  90.0;
 //        leftNRightValues[1] = gyroError / -90.0;
 
         return leftNRightValue;
+    }
+
+    public void fieldCentricDrive(double joyX, double joyY, double joyZ, boolean enableWheels, double scale, DcMotorSimple[] wheels, Gyro gyro){
+
     }
 
 
@@ -100,7 +107,7 @@ public class RobotDrive {
         return max;
     }
 
-    public void setWheelSpeeds(double[] wheelSpeeds, DcMotor[] wheels, double scale, boolean enableWheels){
+    public void setWheelSpeeds(double[] wheelSpeeds, DcMotorSimple[] wheels, double scale, boolean enableWheels){
 //        publicWheelSpeeds = wheelSpeeds;
         for(int i = 0; i < wheelSpeeds.length; i++){
             publicWheelSpeeds[i] = wheelSpeeds[i] * scale;
