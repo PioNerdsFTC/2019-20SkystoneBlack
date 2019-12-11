@@ -51,7 +51,7 @@ public class RobotDrive {
 
         //0 is the left, 1 is the right;
 
-        double gyroError = Double.parseDouble(gyro.getZ());
+        double gyroError = gyro.getZ();
 
         leftNRightValues[0] = gyroError /  90.0;
         leftNRightValues[1] = gyroError / -90.0;

@@ -20,7 +20,7 @@ import java.util.Locale;
 
 //import org.firstinspires.ftc.robotcore.external.Telemetry;
 //import org.firstinspires.ftc.robotcore.external.android.AndroidGyroscope;
-public class Gyro{
+public class Gyro {
 
 //    AndroidGyroscope gyro = new AndroidGyroscope();
 //    TeleopTesting tt = new TeleopTesting();
@@ -79,13 +79,14 @@ public class Gyro{
 
 
     ///*
-    public String getZ(){
+    public double getZ(){
 //        return gyro.getX();
         if(imu != null) {
             angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
-            return formatAngle(angles.angleUnit, angles.firstAngle);
+            return Double.parseDouble(formatAngle(angles.angleUnit, angles.firstAngle));
         }else{
-            return "IMU_NULL_ERROR";
+//            return "IMU_NULL_ERROR";
+            return -1.0;
         }
     }
     public String getY(){

@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -20,9 +21,8 @@ public class Autobot {
     public DcMotor  leftArm     = null;
     public Servo    leftClaw    = null;
     public Servo    rightClaw   = null;
-    public ModernRoboticsI2cGyro imu = null;
+    public BNO055IMU imu = null; // ?
     public ColorSensor colorSensor;
-
 
     public static final double MID_SERVO       =  0.5 ;
     public static final double ARM_UP_POWER    =  0.45 ;
@@ -48,8 +48,9 @@ public class Autobot {
         BLeft = hwMap.get(DcMotor.class, "BLeft");
         BRight = hwMap.get(DcMotor.class, "BRight");
         colorSensor = hwMap.get(ColorSensor.class, "colorSensor");
+        imu = hwMap.get(BNO055IMU.class, "imu");
 
-       // imu = hwMap.get(ModernRoboticsI2cGyro.class, "imu");
+
 //        leftArm    = hwMap.get(DcMotor.class, "left_arm");
         FLeft.setDirection(DcMotor.Direction.FORWARD);
         FRight.setDirection(DcMotor.Direction.REVERSE);
@@ -76,5 +77,7 @@ public class Autobot {
 //        rightClaw = hwMap.get(Servo.class, "right_hand");
 //        leftClaw.setPosition(MID_SERVO);
 //        rightClaw.setPosition(MID_SERVO);
+
+
     }
 }
