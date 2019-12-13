@@ -28,8 +28,8 @@ public class Autobot {
     public Servo    rightClaw;
     public BNO055IMU imu;
     public ColorSensor colorSensor;
-    static final double FORWARD_SPEED = 0.6;
-    static final double TURN_SPEED = 0.4;
+    static final double FORWARD_SPEED = 0.3;
+    static final double TURN_SPEED = 0.2;
     int rotation, startPosition;
 
     /* local OpMode members. */
@@ -91,7 +91,7 @@ public class Autobot {
 
 
 
-    public void driveByRotation(int rotation) {
+    public void driveByRotation(double rotation) {
         // Drive by rotations (inches)
         startPosition = BLeft.getCurrentPosition();
 

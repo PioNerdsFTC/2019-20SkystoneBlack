@@ -19,15 +19,15 @@ public class JasonAutonomous extends LinearOpMode {
     public DcMotor  FRight;
     public DcMotor  BLeft;
     public DcMotor  BRight;
-    public DcMotor  leftArm;
+    public DcMotor leftArm;
     public Servo leftClaw;
-    public Servo    rightClaw;
+    public Servo rightClaw;
     public BNO055IMU imu;
     public ColorSensor colorSensor;
     static final double FORWARD_SPEED = 0.6;
     static final double TURN_SPEED = 0.4;
 
-
+    // Based on methods found in autobot
     public void runOpMode() {
         // Define and Initialize Motors + color sensor
         FLeft  = hardwareMap.get(DcMotor .class, "FLeft");
@@ -45,7 +45,9 @@ public class JasonAutonomous extends LinearOpMode {
         //       double secondDriveForwardTime = 3.0;
         double initialGyroValue = gyro.getZ();
 
-        // 1. Drive straight for X seconds
+        // 1. Drive straight for 2.25
+//        robot.driveByRotation(2.25);
+
 //        robot.FLeft.setPower(FORWARD_SPEED);
 //        robot.FRight.setPower(FORWARD_SPEED);
 //        robot.BLeft.setPower(FORWARD_SPEED);
@@ -57,36 +59,39 @@ public class JasonAutonomous extends LinearOpMode {
 //        }
 
         // Drive by X rotation
-        while (runtime.seconds()<10000) {
+        while (runtime.seconds()<1000) {
             telemetry.addData("encoder", robot.BLeft.getCurrentPosition());
             telemetry.update();
         }
 
-//        robot.driveByRotation(2);
-
 //        // Stop Robot if blue
 //        robot.driveToBlue();
 //        runtime.reset();
-//        // 2. Lower Grabber, Pick up block, Lift Grabber
+//        // 2. (Grab) Lower Grabber, Pick up block, Lift Grabber
 //
-//        // 3. Back up
+//        // 3. Tip back 14
+//        robot.tip(14);
+//        // 4. Back 0.5
+//        robot.driveByRotation(-0.5);
 //
-//        // 4. Turn Left/Right 90 degrees
-//        robot.FLeft.setPower(-TURN_SPEED);
-//        robot.FRight.setPower(+TURN_SPEED);
-//        robot.BLeft.setPower(-TURN_SPEED);
-//        robot.BRight.setPower(+TURN_SPEED);
-//        runtime.reset();
-//        while ((gyro.getZ() < initialGyroValue + 90)) {
-//            telemetry.addData("Path", "Leg 2: %2.5f S Elapsed", runtime.seconds());
-//            telemetry.update();
-//        }
-//        robot.FLeft.setPower(0);
-//        robot.FRight.setPower(0);
-//        robot.BLeft.setPower(0);
-//        robot.BRight.setPower(0);
-//        runtime.reset();
- /*      // 4. Move forward X seconds
+        // 4. Turn Left/Right 90 degrees
+        // Left
+        robot.FLeft.setPower(-TURN_SPEED);
+        robot.FRight.setPower(+TURN_SPEED);
+        robot.BLeft.setPower(-TURN_SPEED);
+        robot.BRight.setPower(+TURN_SPEED);
+        runtime.reset();
+        while ((gyro.getZ() < initialGyroValue + 90)) {
+            telemetry.addData("Path", "Leg 2: %2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        robot.FLeft.setPower(0);
+        robot.FRight.setPower(0);
+        robot.BLeft.setPower(0);
+        robot.BRight.setPower(0);
+        runtime.reset();
+ /*      // 4. Move forward 4
+
         robot.FLeft.setPower(FORWARD_SPEED);
         robot.FRight.setPower(FORWARD_SPEED);
         robot.BLeft.setPower(FORWARD_SPEED);
